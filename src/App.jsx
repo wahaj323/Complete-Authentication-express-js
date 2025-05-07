@@ -7,6 +7,7 @@ import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDashboard';
 import Navbar from './components/Navbar';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import UsersData from './components/UsersData';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, user } = useAuth();
@@ -48,6 +49,14 @@ const App = () => {
                     <UserDashboard />
                   </ProtectedRoute>
                 } 
+              />
+              <Route 
+              path='/users-data' 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                    <UsersData/>
+                  </ProtectedRoute>
+              }
               />
               <Route path="/unauthorized" element={<Unauthorized />} />
             </Routes>

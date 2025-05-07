@@ -25,12 +25,19 @@ const Navbar = () => {
             </li>
             {isAuthenticated && (
               <>
-                <li className="nav-item">
+                {user && user.role === 'user' && (
+                  <li className="nav-item">
                   <Link className="nav-link" to="/user-dashboard">Dashboard</Link>
                 </li>
+                )}
                 {user && user.role === 'admin' && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin-dashboard">Admin</Link>
+                  </li>
+                )}
+                {user && user.role === 'admin' && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/users-data">Users Data</Link>
                   </li>
                 )}
               </>

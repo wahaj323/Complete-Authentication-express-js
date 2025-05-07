@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -12,25 +12,27 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (!username || !password) {
       setError('Please enter both username and password');
       return;
     }
 
     const result = await login(username, password);
-    
-    if (result.success) {
-      // Redirect based on role
-      if (user && user.role === 'admin') {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/user-dashboard');
-      }
-    } else {
+
+    if (!result?.success) {
       setError(result.message);
     }
   };
+
+  // Redirect once user updates
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      navigate('/admin-dashboard');
+    } else if (user?.role === 'user') {
+      navigate('/user-dashboard');
+    }
+  }, [user, navigate]);
 
   return (
     <div className="card">

@@ -87,6 +87,18 @@ app.get('/api/user-dashboard', authenticate, authorize(['user', 'admin']), (req,
   res.json({ message: 'Welcome to the User Dashboard' });
 });
 
+// Admin Route to Get All Users with Role 'user'
+app.get('/api/users', authenticate, authorize(['admin']), async (req, res) => {
+  try {
+    // Find users with role 'user'
+    const users = await User.find({ role: 'user' }).select('username role'); // Customize the fields you want to return
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 // Home Route (Public)
 app.get('/', (req, res) => {
   res.send('Welcome to the authentication server');
